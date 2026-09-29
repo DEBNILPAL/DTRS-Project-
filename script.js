@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         statusBadgeHtml = `<span class="status-indicator-tag amber"><span class="signal-bulb signal-amber"></span> ${status}</span>`;
       }
 
+      const resolvedUrl = formatHref(item.url);
+
       return `
         <article class="hub-card card-${theme}" data-id="${item.id || ''}">
           <div class="card-accent-rail ${theme}"></div>
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="card-bottom">
-            <a href="${item.url}" class="launch-btn btn-${theme}" target="_blank" rel="noopener noreferrer">
+            <a href="${resolvedUrl}" class="launch-btn btn-${theme}" target="_blank" rel="noopener noreferrer">
               <span>Launch Site</span>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -167,5 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  function formatHref(url) {
+    if (!url) return '#';
+    const trimmed = String(url).trim();
+    if (/^(https?:\/\/|\/|\.\/|\.\.\/|apps\/|mailto:|#)/i.test(trimmed)) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
   }
 });
