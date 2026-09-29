@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTRS | Train Delays & Live Tracking System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060a12;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --cyan: #00f0ff;
+      --red: #f43f5e;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background: var(--cyan);
+      color: #060a12;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    h1 { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.4rem;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+    }
+    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    .stat-val { font-size: 1.8rem; font-weight: 700; margin-top: 0.4rem; }
+    .text-red { color: var(--red); }
+    .text-green { color: var(--green); }
+    .text-cyan { color: var(--cyan); }
+    
+    /* Table */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+    .table-header {
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th {
+      padding: 1rem 1.5rem;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    td {
+      padding: 1.1rem 1.5rem;
+      font-size: 0.92rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.03); }
+    .status-pill {
+      display: inline-flex;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+    .pill-delayed { background: rgba(244, 63, 94, 0.15); color: var(--red); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .pill-ontime { background: rgba(16, 185, 129, 0.15); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-minor { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <span class="badge">DTRS MODULE 01</span>
+        <h1>Live Train Delay Telemetry</h1>
+      </div>
+      <a href="../../index.html" class="back-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Return to DTRS Portal
+      </a>
+    </header>
+
+    <section class="grid-stats">
+      <div class="stat-card">
+        <div class="stat-title">AVG NETWORK DELAY</div>
+        <div class="stat-val mono text-cyan">+11.4 min</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">CRITICAL DELAYS (>30m)</div>
+        <div class="stat-val mono text-red">14 Rakes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">ON-TIME PERFORMANCE</div>
+        <div class="stat-val mono text-green">87.6%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">GPS TELEMETRY LATENCY</div>
+        <div class="stat-val mono">120 ms</div>
+      </div>
+    </section>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2 style="font-size: 1.15rem; font-weight: 600;">Active Corridor Tracking Feed</h2>
+        <span class="mono" style="font-size: 0.8rem; color: var(--muted);">Auto-refreshing (5s interval)</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>TRAIN NO. & NAME</th>
+            <th>ORIGIN - DEST</th>
+            <th>CURRENT SECTION</th>
+            <th>SCHEDULED</th>
+            <th>ESTIMATED</th>
+            <th>STATUS / DELAY</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>12004</strong> New Delhi Shatabdi</td>
+            <td>LKO &rarr; NDLS</td>
+            <td>Ghaziabad Junction (GZB)</td>
+            <td class="mono">11:45</td>
+            <td class="mono">12:02</td>
+            <td><span class="status-pill pill-delayed">+17 mins Delay</span></td>
+          </tr>
+          <tr>
+            <td><strong>12951</strong> Mumbai Rajdhani</td>
+            <td>MMCT &rarr; NDLS</td>
+            <td>Kota Division (KOTA)</td>
+            <td class="mono">08:25</td>
+            <td class="mono">08:25</td>
+            <td><span class="status-pill pill-ontime">On Time</span></td>
+          </tr>
+          <tr>
+            <td><strong>12301</strong> Howrah Rajdhani</td>
+            <td>HWH &rarr; NDLS</td>
+            <td>Kanpur Central (CNB)</td>
+            <td class="mono">14:10</td>
+            <td class="mono">14:48</td>
+            <td><span class="status-pill pill-delayed">+38 mins Delay</span></td>
+          </tr>
+          <tr>
+            <td><strong>22436</strong> Vande Bharat Exp</td>
+            <td>NDLS &rarr; BSB</td>
+            <td>Prayagraj Jn (PRYJ)</td>
+            <td class="mono">10:08</td>
+            <td class="mono">10:14</td>
+            <td><span class="status-pill pill-minor">+6 mins Delay</span></td>
+          </tr>
+          <tr>
+            <td><strong>12626</strong> Kerala Express</td>
+            <td>NDLS &rarr; TVC</td>
+            <td>Nagpur Section (NGP)</td>
+            <td class="mono">18:30</td>
+            <td class="mono">18:32</td>
+            <td><span class="status-pill pill-ontime">On Time (+2m)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

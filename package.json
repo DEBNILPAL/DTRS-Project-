@@ -1,0 +1,19 @@
+{
+  "name": "dtrs-deployment-portal",
+  "version": "1.0.0",
+  "description": "DTRS - Train Operations, Deployments & Simulators Hub",
+  "private": true,
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "railway",
+    "dtrs",
+    "trains",
+    "delays",
+    "eta",
+    "vercel"
+  ],
+  "author": "SIH 2026 Team",
+  "license": "MIT"
+}

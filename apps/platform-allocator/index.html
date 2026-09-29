@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTRS | Track Delay & Train Movement Mapping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060a12;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --cyan: #00f0ff;
+      --amber: #ffaa00;
+      --green: #10b981;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background: var(--cyan);
+      color: #060a12;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    h1 { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.4rem;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+    }
+    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    .stat-val { font-size: 1.8rem; font-weight: 700; margin-top: 0.4rem; }
+    .text-green { color: var(--green); }
+    .text-cyan { color: var(--cyan); }
+    .text-amber { color: var(--amber); }
+
+    .track-map-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      backdrop-filter: blur(12px);
+    }
+    .map-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .track-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .track-label {
+      width: 140px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .track-visual {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      position: relative;
+    }
+    .train-block {
+      position: absolute;
+      top: -6px;
+      height: 20px;
+      padding: 0 0.6rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .block-green {
+      background: var(--green);
+      color: #060a12;
+      left: 15%;
+    }
+    .block-amber {
+      background: var(--amber);
+      color: #060a12;
+      left: 60%;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <span class="badge">ADMIN VIEW &bull; MAPPED</span>
+        <h1>Track Delay & Train Movement Mapping</h1>
+      </div>
+      <a href="../../index.html" class="back-btn">
+        Return to DTRS Portal
+      </a>
+    </header>
+
+    <section class="grid-stats">
+      <div class="stat-card">
+        <div class="stat-title">ACTIVE TRACK SECTIONS</div>
+        <div class="stat-val mono text-cyan">42 Sections</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">OCCUPIED PLATFORMS</div>
+        <div class="stat-val mono text-amber">11 / 16</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">AVERAGE HOLD DURATION</div>
+        <div class="stat-val mono text-green">4.2 min</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">SIGNAL TELEMETRY</div>
+        <div class="stat-val mono">Synchronized</div>
+      </div>
+    </section>
+
+    <div class="track-map-card">
+      <div class="map-title">
+        <span>Corridor Section Movement Mapping</span>
+        <span class="mono" style="font-size: 0.8rem; color: var(--muted);">Live Feed (Auto-Sync)</span>
+      </div>
+
+      <div class="track-row">
+        <span class="track-label">LINE 1 (MAIN UP)</span>
+        <div class="track-visual">
+          <div class="train-block block-green">RAKE #12004 (ON TRACK)</div>
+        </div>
+      </div>
+
+      <div class="track-row">
+        <span class="track-label">LINE 2 (MAIN DN)</span>
+        <div class="track-visual">
+          <div class="train-block block-amber">RAKE #12951 (+4m HOLD)</div>
+        </div>
+      </div>
+
+      <div class="track-row">
+        <span class="track-label">LOOP LINE 1</span>
+        <div class="track-visual">
+          <div class="train-block block-green" style="left: 40%;">FREIGHT #G-84</div>
+        </div>
+      </div>
+
+      <div class="track-row">
+        <span class="track-label">PLATFORM 01-04</span>
+        <div class="track-visual">
+          <div class="train-block block-green" style="left: 80%;">TERMINAL CLEAR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
