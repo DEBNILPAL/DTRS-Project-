@@ -606,6 +606,31 @@ body {
 .card-purple .url-display { color: #d8b4fe; }
 .card-amber .url-display { color: var(--amber-primary); }
 
+/* GitHub Section URL Box & Card Resizing */
+#githubs-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+}
+
+#githubs-grid .card-url-container,
+.card-purple .card-url-container {
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.65rem 0.95rem;
+}
+
+#githubs-grid .url-display,
+.card-purple .url-display {
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  text-overflow: unset;
+  overflow: visible;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
 /* Launch Site Button */
 .card-bottom {
   border-top: 1px solid var(--border-subtle);
