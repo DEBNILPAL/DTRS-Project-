@@ -44,7 +44,37 @@ const DTRS_CONFIG = {
   ],
 
   // ----------------------------------------------------------------------------
-  // 2. GITHOBS (Source Code Repositories)
+  // 2. SIMULATORS (Railway Sandboxes & Testing Environments)
+  // ----------------------------------------------------------------------------
+  simulators: [
+    {
+      id: "sim-weather",
+      platform: "SIM-01",
+      title: "Weather Simulator",
+      description: "Simulator which helps understand how weather causes train delays",
+      url: "https://dtrs-wsimulation.vercel.app", // Change this to your simulator URL
+      status: "SANDBOX"
+    },
+    {
+      id: "sim-priority",
+      platform: "SIM-02",
+      title: "Priority Order Simulation",
+      description: "Simulator which helps understand how priority order of trains causes train delays",
+      url: "https://dtrs-psimulation.vercel.app", // Change this to your simulator URL
+      status: "SANDBOX"
+    },
+    {
+      id: "sim-tsr",
+      platform: "SIM-03",
+      title: "Temporary Speed Restrictions Simulator",
+      description: "Simulator which helps understand how temporrary speed restrictions cause train delays",
+      url: "https://dtrs-tsrsimulation.vercel.app", // Change this to your simulator URL
+      status: "SANDBOX"
+    }
+  ],
+
+  // ----------------------------------------------------------------------------
+  // 3. GITHUBS (Source Code Repositories)
   // ----------------------------------------------------------------------------
   githubs: [
     {
@@ -60,38 +90,32 @@ const DTRS_CONFIG = {
       platform: "REPO 02",
       title: "ETA DTRS Mobile Gateway",
       description: "Codease behind the passenger-facing ETA DTRS Application",
-      url: "https://github.com/dtrs-project/eta-rescheduling-ai", // Change this to your GitHub repo URL
+      url: "Link Due", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
-  ],
-
-  // ----------------------------------------------------------------------------
-  // 3. SIMULATORS (Railway Sandboxes & Testing Environments)
-  // ----------------------------------------------------------------------------
-  simulators: [
     {
-      id: "sim-headway",
-      platform: "SIM-01",
-      title: "Dynamic Headway & Conflict Sandbox",
-      description: "Simulate single-line holds, overtaking loops, track clearance intervals, and automatic block signal progression under load.",
-      url: "https://simulator.dtrs-network.in/headway", // Change this to your simulator URL
-      status: "SANDBOX"
+      id: "github-application",
+      platform: "REPO 03",
+      title: "Weather Simulator",
+      description: "Codebase behind the simulator which helps understand how weather causes train delays",
+      url: "https://github.com/AmrityaRajwanshy/Weather-Simulation-DTRS.git", // Change this to your GitHub repo URL
+      status: "PUBLIC REPO"
     },
     {
-      id: "sim-delays",
-      platform: "SIM-02",
-      title: "Cascading Delay Propagation Engine",
-      description: "Stress-test network disruption scenarios and analyze how an initial 15-minute rake delay cascades through busy junction hubs.",
-      url: "https://simulator.dtrs-network.in/delays", // Change this to your simulator URL
-      status: "SANDBOX"
+      id: "github-application",
+      platform: "REPO 04",
+      title: "Priority Order Simulation",
+      description: "Codease behind the simulator which helps understand how priority order of trains causes train delays",
+      url: "https://github.com/AmrityaRajwanshy/Priority-Simulation-DTRS.git", // Change this to your GitHub repo URL
+      status: "PUBLIC REPO"
     },
     {
-      id: "sim-yard",
-      platform: "SIM-03",
-      title: "Yard Master Platform Sandbox",
-      description: "Simulate real-time platform occupancy, rake turnaround maintenance cycles, and dynamic track switching in major terminal stations.",
-      url: "https://simulator.dtrs-network.in/platform-allocator", // Change this to your simulator URL
-      status: "SANDBOX"
+      id: "github-application",
+      platform: "REPO 05",
+      title: "Temporary Speed Restrictions Simulator",
+      description: "Codebase behind the simulator which helps understand how temporrary speed restrictions cause train delays",
+      url: "https://github.com/AmrityaRajwanshy/TSR-Simulator-DTRS.git", // Change this to your GitHub repo URL
+      status: "PUBLIC REPO"
     }
   ],
 };

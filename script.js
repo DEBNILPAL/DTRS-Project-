@@ -21,17 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Render Cards from config.js
   if (typeof DTRS_CONFIG !== 'undefined') {
     renderSection('deployments-grid', DTRS_CONFIG.deployments || [], 'cyan');
-    renderSection('githubs-grid', DTRS_CONFIG.githubs || [], 'purple');
     renderSection('simulators-grid', DTRS_CONFIG.simulators || [], 'amber');
+    renderSection('githubs-grid', DTRS_CONFIG.githubs || [], 'purple');
 
     // Update Telemetry Counts
     const countDeployments = document.getElementById('count-deployments');
-    const countGithubs = document.getElementById('count-githubs');
     const countSimulators = document.getElementById('count-simulators');
+    const countGithubs = document.getElementById('count-githubs');
 
     if (countDeployments) countDeployments.textContent = `${(DTRS_CONFIG.deployments || []).length} Live`;
-    if (countGithubs) countGithubs.textContent = `${(DTRS_CONFIG.githubs || []).length} Public`;
     if (countSimulators) countSimulators.textContent = `${(DTRS_CONFIG.simulators || []).length} Active`;
+    if (countGithubs) countGithubs.textContent = `${(DTRS_CONFIG.githubs || []).length} Public`;
 
     // Render Contact Emails in Footer
     renderFooterEmails(DTRS_CONFIG.emails);
