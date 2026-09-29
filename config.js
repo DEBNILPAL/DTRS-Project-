@@ -68,7 +68,7 @@ const DTRS_CONFIG = {
       platform: "SIM-03",
       title: "Temporary Speed Restrictions Simulator",
       description: "Simulator which helps understand how temporrary speed restrictions cause train delays",
-      url: "https://dtrs-tsrsimulation.vercel.app", // Change this to your simulator URL
+      url: "https://dtrs-tsimulation.vercel.app", // Change this to your simulator URL
       status: "SANDBOX"
     }
   ],
