@@ -82,7 +82,7 @@ const DTRS_CONFIG = {
       platform: "REPO 01",
       title: "DTRS Frontend & Web Gateway",
       description: "Codebase behind admin-facing ETA DTRS Application.",
-      url: "https://github.com/dtrs-project/dtrs-portal", // Change this to your GitHub repo URL
+      url: "Link Due", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
@@ -90,7 +90,7 @@ const DTRS_CONFIG = {
       platform: "REPO 02",
       title: "ETA DTRS Mobile Gateway",
       description: "Codease behind the passenger-facing ETA DTRS Application",
-      url: "Link Due", // Change this to your GitHub repo URL
+      url: "https://github.com/bratatech/DTPR.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
