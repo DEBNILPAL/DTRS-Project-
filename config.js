@@ -30,7 +30,7 @@ const DTRS_CONFIG = {
       platform: "Mobile Application",
       title: "Passenger View of DTRS",
       description: "This dashboard gives passengers real-time updates on their train's schedule, platform information, and expected arrival times.",
-      url: "apps/eta/index.html", // Change this to your live deployment URL (e.g., https://eta.dtrs.streamlit.app)
+      url: "dtpr-mobile.vercel.app", // Change this to your live deployment URL (e.g., https://eta.dtrs.streamlit.app)
       status: "LIVE"
     },
     {
