@@ -22,7 +22,7 @@ const DTRS_CONFIG = {
       platform: "Web Application",
       title: "Admin View of DTRS",
       description: "This dashboard gives railway staff a comprehensive view of delays, signal status, and train movements across the network.",
-      url: "apps/delays/index.html", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
+      url: "https://admin-dtrs.vercel.app/", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
       status: "LIVE"
     },
     {
@@ -34,12 +34,12 @@ const DTRS_CONFIG = {
       status: "LIVE"
     },
     {
-      id: "deploy-api",
+      id: "Deployement 3",
       platform: "Admin View (Mapped)",
-      title: "Understanding the delay and train movement on the tracks",
-      description: "FastAPI microservice streaming high-frequency GPS coordinate sync, block section telemetry, and delay metrics to clients.",
-      url: "apps/platform-allocator/index.html", // Change this to your live API URL
-      status: "ACTIVE"
+      title: "Visualising DTRS Division System and Delay on Realtime Map",
+      description: "This dashboard gives railway staff a comprehensive view of delays, signal status, and train movements across the network, Inspired by Bhuvan Map",
+      url: "https://dtpr-mapping.vercel.app", // Change this to your live API URL
+      status: "LIVE"
     }
   ],
 
@@ -80,22 +80,30 @@ const DTRS_CONFIG = {
     {
       id: "github-portal",
       platform: "REPO 01",
-      title: "DTRS Frontend & Web Gateway",
+      title: "DTRS Admin Gateway",
       description: "Codebase behind admin-facing ETA DTRS Application.",
-      url: "Link Due", // Change this to your GitHub repo URL
+      url: "https://github.com/bratatech/Admin-DTRS.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
       id: "github-application",
       platform: "REPO 02",
-      title: "ETA DTRS Mobile Gateway",
-      description: "Codease behind the passenger-facing ETA DTRS Application",
+      title: "DTRS Mobile Gateway",
+      description: "Codebase behind the passenger-facing ETA DTRS Application",
       url: "https://github.com/bratatech/DTPR.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
       id: "github-application",
       platform: "REPO 03",
+      title: "DTRS Mapping System",
+      description: "Codebase behind DTRS Division and Delay Mapping System",
+      url: "https://github.com/bratatech/Mapping-DTRS.git", // Change this to your GitHub repo URL
+      status: "PUBLIC REPO"
+    },
+    {
+      id: "github-application",
+      platform: "REPO 04",
       title: "Weather Simulator",
       description: "Codebase behind the simulator which helps understand how weather causes train delays",
       url: "https://github.com/AmrityaRajwanshy/Weather-Simulation-DTRS.git", // Change this to your GitHub repo URL

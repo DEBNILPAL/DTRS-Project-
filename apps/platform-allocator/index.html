@@ -3,71 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DTRS | Track Delay & Train Movement Mapping</title>
+  <title>DTRS | Visualising DTRS Division System and Delay on Realtime Map</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #060a12;
-      --card-bg: rgba(15, 23, 42, 0.75);
-      --border: rgba(255, 255, 255, 0.08);
-      --cyan: #00f0ff;
-      --amber: #ffaa00;
-      --green: #10b981;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --bg: #f1f5f9;
+      --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #edf2f7 60%, #e2e8f0 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --border: rgba(148, 163, 184, 0.28);
+      --cyan: #0284c7;
+      --cyan-subtle: #e0f2fe;
+      --cyan-border: #bae6fd;
+      --amber: #d97706;
+      --amber-subtle: #fef3c7;
+      --amber-border: #fde68a;
+      --green: #059669;
+      --green-subtle: #ecfdf5;
+      --green-border: #a7f3d0;
+      --text: #0f172a;
+      --muted: #475569;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 18px -2px rgba(15, 23, 42, 0.06);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
+      background-image: var(--bg-gradient);
       color: var(--text);
       font-family: 'Outfit', sans-serif;
-      padding: 2rem;
+      padding: 2.5rem 2rem;
       min-height: 100vh;
+      line-height: 1.6;
     }
     .container { max-width: 1200px; margin: 0 auto; }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.2rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.06);
+      background: #ffffff;
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.6rem 1.2rem;
+      padding: 0.6rem 1.3rem;
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.88rem;
-      font-weight: 500;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
       transition: all 0.2s ease;
     }
     .back-btn:hover {
       background: var(--cyan);
-      color: #060a12;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      color: #ffffff;
+      border-color: var(--cyan);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
     }
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.8rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      background: rgba(0, 240, 255, 0.1);
+      font-weight: 700;
+      background: var(--cyan-subtle);
       color: var(--cyan);
-      border: 1px solid rgba(0, 240, 255, 0.3);
+      border: 1px solid var(--cyan-border);
     }
-    h1 { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+    h1 { font-size: 2.2rem; font-weight: 800; margin-top: 0.4rem; color: var(--text); }
     .grid-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -79,10 +94,11 @@
       border: 1px solid var(--border);
       padding: 1.4rem;
       border-radius: 14px;
+      box-shadow: var(--shadow-sm);
       backdrop-filter: blur(12px);
     }
-    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-    .stat-val { font-size: 1.8rem; font-weight: 700; margin-top: 0.4rem; }
+    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .stat-val { font-size: 1.8rem; font-weight: 800; margin-top: 0.4rem; }
     .text-green { color: var(--green); }
     .text-cyan { color: var(--cyan); }
     .text-amber { color: var(--amber); }
@@ -92,58 +108,67 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 1.8rem;
+      box-shadow: var(--shadow-md);
       backdrop-filter: blur(12px);
     }
     .map-title {
       font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: var(--text);
     }
     .track-row {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 1rem 0;
+      gap: 1.2rem;
+      padding: 1.2rem 0;
       border-bottom: 1px solid var(--border);
     }
+    .track-row:last-child {
+      border-bottom: none;
+    }
     .track-label {
-      width: 140px;
+      width: 150px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8rem;
+      font-weight: 700;
       color: var(--muted);
       flex-shrink: 0;
     }
     .track-visual {
       flex: 1;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 4px;
+      height: 10px;
+      background: #e2e8f0;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
       position: relative;
     }
     .train-block {
       position: absolute;
-      top: -6px;
-      height: 20px;
-      padding: 0 0.6rem;
-      border-radius: 4px;
-      font-size: 0.7rem;
+      top: -8px;
+      height: 24px;
+      padding: 0 0.8rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+      letter-spacing: 0.5px;
     }
     .block-green {
-      background: var(--green);
-      color: #060a12;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
       left: 15%;
     }
     .block-amber {
-      background: var(--amber);
-      color: #060a12;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff;
       left: 60%;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
@@ -154,10 +179,15 @@
     <header>
       <div>
         <span class="badge">ADMIN VIEW &bull; MAPPED</span>
-        <h1>Track Delay & Train Movement Mapping</h1>
+        <h1>Visualising DTRS Division System & Delay on Realtime Map</h1>
+        <p style="color: var(--muted); font-size: 0.88rem; margin-top: 0.3rem;">Inspired by Bhuvan Map &bull; Live Railway Division Tracking</p>
       </div>
       <a href="../../index.html" class="back-btn">
-        Return to DTRS Portal
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Return to DTRS Hub
       </a>
     </header>
 

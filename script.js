@@ -1,9 +1,9 @@
 /**
  * DTRS - Dynamic Train Rescheduling System
- * Dynamic Renderer & UI Interactions using config.js
+ * Consolidated Semi-Light Hub Dynamic Renderer & Interactions
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initDTRSApp() {
   // 1. Live Clock (IST)
   const liveClockEl = document.getElementById('live-clock');
   function updateClock() {
@@ -18,28 +18,81 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateClock, 1000);
   updateClock();
 
-  // 2. Render Cards from config.js
+  let activeFilter = 'all';
+  let searchQuery = '';
+
+  // 2. Initial Setup from config.js
   if (typeof DTRS_CONFIG !== 'undefined') {
-    renderSection('deployments-grid', DTRS_CONFIG.deployments || [], 'cyan');
-    renderSection('simulators-grid', DTRS_CONFIG.simulators || [], 'amber');
-    renderSection('githubs-grid', DTRS_CONFIG.githubs || [], 'purple');
+    initHub();
+  }
 
-    // Update Telemetry Counts
-    const countDeployments = document.getElementById('count-deployments');
-    const countSimulators = document.getElementById('count-simulators');
-    const countGithubs = document.getElementById('count-githubs');
+  function initHub() {
+    const deployments = DTRS_CONFIG.deployments || [];
+    const simulators = DTRS_CONFIG.simulators || [];
+    const githubs = DTRS_CONFIG.githubs || [];
+    const totalCount = deployments.length + simulators.length + githubs.length;
 
-    if (countDeployments) countDeployments.textContent = `${(DTRS_CONFIG.deployments || []).length} Live`;
-    if (countSimulators) countSimulators.textContent = `${(DTRS_CONFIG.simulators || []).length} Active`;
-    if (countGithubs) countGithubs.textContent = `${(DTRS_CONFIG.githubs || []).length} Public`;
+    // Update Counts in Filter Tabs
+    setTextContent('count-all', totalCount);
+    setTextContent('tab-count-deployments', deployments.length);
+    setTextContent('tab-count-simulators', simulators.length);
+    setTextContent('tab-count-githubs', githubs.length);
+
+    // Update Metrics Summary Ribbon
+    setTextContent('metric-deployments', deployments.length);
+    setTextContent('metric-simulators', simulators.length);
+    setTextContent('metric-githubs', githubs.length);
+
+    // Update Telemetry Status Strip
+    setTextContent('count-deployments', `${deployments.length} Live`);
+    setTextContent('count-simulators', `${simulators.length} Active`);
+    setTextContent('count-githubs', `${githubs.length} Public`);
 
     // Render Contact Emails in Footer
     renderFooterEmails(DTRS_CONFIG.emails);
+
+    // Initial Cards Render
+    renderAllSections();
+
+    // Setup Search & Category Filter Listeners
+    setupControls();
+  }
+
+  function renderAllSections() {
+    renderSection('deployments-grid', filterItems(DTRS_CONFIG.deployments || []), 'cyan');
+    renderSection('simulators-grid', filterItems(DTRS_CONFIG.simulators || []), 'amber');
+    renderSection('githubs-grid', filterItems(DTRS_CONFIG.githubs || []), 'purple');
+
+    applySectionVisibility();
+    bindCardInteractions();
+  }
+
+  function filterItems(items) {
+    if (!searchQuery) return items;
+    const query = searchQuery.toLowerCase().trim();
+    return items.filter(item => {
+      const matchTitle = (item.title || '').toLowerCase().includes(query);
+      const matchDesc = (item.description || '').toLowerCase().includes(query);
+      const matchPlatform = (item.platform || '').toLowerCase().includes(query);
+      const matchUrl = (item.url || '').toLowerCase().includes(query);
+      const matchStatus = (item.status || '').toLowerCase().includes(query);
+      return matchTitle || matchDesc || matchPlatform || matchUrl || matchStatus;
+    });
   }
 
   function renderSection(containerId, items, theme) {
     const container = document.getElementById(containerId);
     if (!container) return;
+
+    if (items.length === 0) {
+      container.innerHTML = `
+        <div class="no-results-box">
+          <h4>No matching modules found</h4>
+          <p>Try searching for a different keyword or reset the search filter.</p>
+        </div>
+      `;
+      return;
+    }
 
     container.innerHTML = items.map(item => {
       const urlDisplay = escapeHtml(item.url);
@@ -73,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="card-url-container">
-            <span class="url-label">${theme.toUpperCase()} URL:</span>
+            <!-- <span class="url-label">${theme.toUpperCase()} ENDPOINT:</span> -->
             <div class="url-display mono-text" title="${urlDisplay}">
               ${urlDisplay}
             </div>
@@ -94,6 +147,94 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
   }
 
+  function applySectionVisibility() {
+    const sections = document.querySelectorAll('.hub-section');
+    sections.forEach(sec => {
+      const sectionType = sec.getAttribute('data-section-type');
+      if (activeFilter === 'all' || activeFilter === sectionType) {
+        sec.classList.remove('hidden-section');
+      } else {
+        sec.classList.add('hidden-section');
+      }
+    });
+  }
+
+  function setupControls() {
+    // 1. Search Input Listener
+    const searchInput = document.getElementById('module-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderAllSections();
+      });
+    }
+
+    // 2. Filter Tab Buttons
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        activeFilter = tab.getAttribute('data-filter') || 'all';
+        applySectionVisibility();
+      });
+    });
+  }
+
+  function bindCardInteractions() {
+    const cards = document.querySelectorAll('.hub-card');
+
+    cards.forEach(card => {
+      const launchLink = card.querySelector('.launch-btn');
+      const targetUrl = launchLink ? launchLink.getAttribute('href') : null;
+
+      if (!targetUrl) return;
+
+      card.style.cursor = 'pointer';
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'link');
+
+      // Click card navigates to target URL
+      card.onclick = (e) => {
+        if (e.target.closest('.launch-btn') || e.target.closest('.url-display')) return;
+
+        card.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          card.style.transform = '';
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        }, 100);
+      };
+
+      card.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        }
+      };
+
+      // 3D Smooth Hover Physics
+      card.onmousemove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -3;
+        const rotateY = ((x - centerX) / centerX) * 3;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      };
+
+      card.onmouseleave = () => {
+        card.style.transform = '';
+      };
+    });
+  }
+
   function renderFooterEmails(emails) {
     const footerEmailsEl = document.getElementById('footer-emails');
     if (!footerEmailsEl) return;
@@ -112,54 +253,10 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
-  // 3. Attach Card Click Navigation & 3D Interactive Hover Physics
-  const cards = document.querySelectorAll('.hub-card');
-
-  cards.forEach(card => {
-    const launchLink = card.querySelector('.launch-btn');
-    const targetUrl = launchLink ? launchLink.getAttribute('href') : null;
-
-    if (!targetUrl) return;
-
-    card.style.cursor = 'pointer';
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'link');
-
-    // Click on card navigates to target URL
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.launch-btn')) return;
-
-      card.style.transform = 'scale(0.98)';
-      setTimeout(() => {
-        card.style.transform = '';
-        window.open(targetUrl, '_blank', 'noopener,noreferrer');
-      }, 120);
-    });
-
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        window.open(targetUrl, '_blank', 'noopener,noreferrer');
-      }
-    });
-
-    // 3D Tilt Effect
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -4;
-      const rotateY = ((x - centerX) / centerX) * 4;
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
+  function setTextContent(elementId, text) {
+    const el = document.getElementById(elementId);
+    if (el) el.textContent = text;
+  }
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -179,4 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return `https://${trimmed}`;
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDTRSApp);
+} else {
+  initDTRSApp();
+}
+

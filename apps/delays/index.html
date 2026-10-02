@@ -6,69 +6,80 @@
   <title>DTRS | Train Delays & Live Tracking System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #060a12;
-      --card-bg: rgba(15, 23, 42, 0.75);
-      --border: rgba(255, 255, 255, 0.08);
-      --cyan: #00f0ff;
-      --red: #f43f5e;
-      --green: #10b981;
-      --amber: #f59e0b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --bg: #f1f5f9;
+      --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #edf2f7 60%, #e2e8f0 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --border: rgba(148, 163, 184, 0.28);
+      --cyan: #0284c7;
+      --cyan-subtle: #e0f2fe;
+      --cyan-border: #bae6fd;
+      --red: #e11d48;
+      --green: #059669;
+      --amber: #d97706;
+      --text: #0f172a;
+      --muted: #475569;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 18px -2px rgba(15, 23, 42, 0.06);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
+      background-image: var(--bg-gradient);
       color: var(--text);
       font-family: 'Outfit', sans-serif;
-      padding: 2rem;
+      padding: 2.5rem 2rem;
       min-height: 100vh;
+      line-height: 1.6;
     }
     .container { max-width: 1200px; margin: 0 auto; }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.2rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.06);
+      background: #ffffff;
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.6rem 1.2rem;
+      padding: 0.6rem 1.3rem;
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.88rem;
-      font-weight: 500;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
       transition: all 0.2s ease;
     }
     .back-btn:hover {
       background: var(--cyan);
-      color: #060a12;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      color: #ffffff;
+      border-color: var(--cyan);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
     }
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.8rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      background: rgba(0, 240, 255, 0.1);
+      font-weight: 700;
+      background: var(--cyan-subtle);
       color: var(--cyan);
-      border: 1px solid rgba(0, 240, 255, 0.3);
+      border: 1px solid var(--cyan-border);
     }
-    h1 { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+    h1 { font-size: 2.2rem; font-weight: 800; margin-top: 0.4rem; color: var(--text); }
     .grid-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -80,10 +91,11 @@
       border: 1px solid var(--border);
       padding: 1.4rem;
       border-radius: 14px;
+      box-shadow: var(--shadow-sm);
       backdrop-filter: blur(12px);
     }
-    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-    .stat-val { font-size: 1.8rem; font-weight: 700; margin-top: 0.4rem; }
+    .stat-title { font-size: 0.75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .stat-val { font-size: 1.8rem; font-weight: 800; margin-top: 0.4rem; }
     .text-red { color: var(--red); }
     .text-green { color: var(--green); }
     .text-cyan { color: var(--cyan); }
@@ -94,41 +106,45 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: var(--shadow-md);
       backdrop-filter: blur(12px);
     }
     .table-header {
-      padding: 1.2rem 1.5rem;
+      padding: 1.2rem 1.6rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
+      background: rgba(248, 250, 252, 0.8);
     }
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.6rem;
       font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
       color: var(--muted);
       border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
+      background: #f8fafc;
     }
     td {
-      padding: 1.1rem 1.5rem;
+      padding: 1.1rem 1.6rem;
       font-size: 0.92rem;
       border-bottom: 1px solid var(--border);
+      color: var(--text);
     }
-    tr:hover td { background: rgba(255, 255, 255, 0.03); }
+    tr:hover td { background: rgba(241, 245, 249, 0.6); }
     .status-pill {
       display: inline-flex;
-      padding: 0.2rem 0.6rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
       font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .pill-delayed { background: rgba(244, 63, 94, 0.15); color: var(--red); border: 1px solid rgba(244, 63, 94, 0.3); }
-    .pill-ontime { background: rgba(16, 185, 129, 0.15); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .pill-minor { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .pill-delayed { background: #ffe4e6; color: var(--red); border: 1px solid #fecdd3; }
+    .pill-ontime { background: #d1fae5; color: var(--green); border: 1px solid #a7f3d0; }
+    .pill-minor { background: #fef3c7; color: var(--amber); border: 1px solid #fde68a; }
     .mono { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
@@ -144,7 +160,7 @@
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        Return to DTRS Portal
+        Return to DTRS Hub
       </a>
     </header>
 
@@ -169,7 +185,7 @@
 
     <div class="table-container">
       <div class="table-header">
-        <h2 style="font-size: 1.15rem; font-weight: 600;">Active Corridor Tracking Feed</h2>
+        <h2 style="font-size: 1.15rem; font-weight: 700;">Active Corridor Tracking Feed</h2>
         <span class="mono" style="font-size: 0.8rem; color: var(--muted);">Auto-refreshing (5s interval)</span>
       </div>
       <table>
