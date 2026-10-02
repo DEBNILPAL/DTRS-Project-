@@ -38,7 +38,7 @@ const DTRS_CONFIG = {
       platform: "Admin View (Mapped)",
       title: "Visualising DTRS Division System and Delay on Realtime Map",
       description: "This dashboard gives railway staff a comprehensive view of delays, signal status, and train movements across the network, Inspired by Bhuvan Map",
-      url: "https://dtpr-mapping.vercel.app", // Change this to your live API URL
+      url: "https://dtrs-mapping.vercel.app", // Change this to your live API URL
       status: "LIVE"
     }
   ],
@@ -98,7 +98,7 @@ const DTRS_CONFIG = {
       platform: "REPO 03",
       title: "DTRS Mapping System",
       description: "Codebase behind DTRS Division and Delay Mapping System",
-      url: "https://github.com/bratatech/Mapping-DTRS.git", // Change this to your GitHub repo URL
+      url: "https://github.com/AmrityaRajwanshy/DTRS-Maps-Division.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
