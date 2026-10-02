@@ -1,6 +1,6 @@
 # DTRS - Train Operations, Deployments & Simulators Hub
 
-A sleek, railway-themed static landing portal built for **DTRS (Dynamic Train Rescheduling System)**. It organizes all project resources into **three dedicated sections**: **Deployments**, **Simulators**, and **Githubs**.
+A sleek, railway-themed static landing portal built for **DTRS (Dynamic Train Scheduling System)**. It organizes all project resources into **three dedicated sections**: **Deployments**, **Simulators**, and **Githubs**.
 
 All URLs and configurations are stored in a **single configuration file** (`config.js`) so you can update them in seconds without traversing the codebase.
 

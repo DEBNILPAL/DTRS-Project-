@@ -1009,7 +1009,7 @@ body {
   .navbar { margin: 0 -1.2rem; padding-left: 1.2rem; padding-right: 1.2rem; }
   .hero-headline { font-size: 2rem; }
   .hero-subtext { font-size: 0.98rem; }
-  .live-telemetry .telemetry-pill:first-child { display: none; }
+  .live-telemetry .telemetry-pill:not(.clock-pill) { display: none; }
   .railway-strip { display: none; }
   .footer { flex-direction: column; gap: 0.8rem; align-items: flex-start; }
   .consolidated-metrics { grid-template-columns: 1fr; }
