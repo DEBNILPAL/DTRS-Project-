@@ -22,7 +22,7 @@ const DTRS_CONFIG = {
       platform: "Web Application",
       title: "Admin View of DTRS",
       description: "This dashboard gives railway staff a comprehensive view of delays, signal status, and train movements across the network.",
-      url: "https://dtrs-administrator.vercel.app//", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
+      url: "https://dtrs-administrator.vercel.app", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
       status: "LIVE"
     },
     {
