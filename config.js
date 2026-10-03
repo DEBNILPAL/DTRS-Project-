@@ -30,7 +30,7 @@ const DTRS_CONFIG = {
       platform: "Mobile Application",
       title: "Passenger View of DTRS",
       description: "This dashboard gives passengers real-time updates on their train's schedule, platform information, and expected arrival times.",
-      url: "https://dtpr-mobile.vercel.app", // Change this to your live deployment URL (e.g., https://eta.dtrs.streamlit.app)
+      url: "https://dtrs-mobile.vercel.app", // Change this to your live deployment URL (e.g., https://eta.dtrs.streamlit.app)
       status: "LIVE"
     },
     {
@@ -90,7 +90,7 @@ const DTRS_CONFIG = {
       platform: "REPO 02",
       title: "DTRS Mobile Gateway",
       description: "Codebase behind the passenger-facing ETA DTRS Application",
-      url: "https://github.com/bratatech/DTPR.git", // Change this to your GitHub repo URL
+      url: "https://github.com/AmrityaRajwanshy/Mobile-DTRS.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
