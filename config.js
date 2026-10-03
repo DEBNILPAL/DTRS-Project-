@@ -22,7 +22,7 @@ const DTRS_CONFIG = {
       platform: "Web Application",
       title: "Admin View of DTRS",
       description: "This dashboard gives railway staff a comprehensive view of delays, signal status, and train movements across the network.",
-      url: "https://admin-dtrs.vercel.app/", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
+      url: "https://dtrs-administrator.vercel.app//", // Change this to your live deployment URL (e.g., https://delays.dtrs.vercel.app)
       status: "LIVE"
     },
     {
@@ -82,7 +82,7 @@ const DTRS_CONFIG = {
       platform: "REPO 01",
       title: "DTRS Admin Gateway",
       description: "Codebase behind admin-facing ETA DTRS Application.",
-      url: "https://github.com/bratatech/Admin-DTRS.git", // Change this to your GitHub repo URL
+      url: "https://github.com/AmrityaRajwanshy/DTRS-Administrator.git", // Change this to your GitHub repo URL
       status: "PUBLIC REPO"
     },
     {
